@@ -4,12 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
+typedef struct Processo {
     int id;                     // Identificador do processo
-    int tempo_execucao;         // Tempo total de execucao
+    int tempo_execucao;         // Tempo total de execução
     int tempo_restante;         // Tempo restante de CPU
     int bloqueado;              // Flag de bloqueio
+    int tempo_bloqueio;         // Tempo total de bloqueio
+    int filhos_criados;         // Quantidade de processos filhos criados
+    int filhos_restantes;       // Número de filhos ainda em execução
+    int tempo_total_espera;     // Tempo total de espera (tempo na fila de prontos)
+    int tempo_esperando_filhos; // Tempo de espera devido à criação de filhos
+    struct Processo* pai;       // Ponteiro para o processo pai
 } Processo;
+
 
 // Funções de manipulação de processos
 Processo* criaProcesso(int id, int tempo_execucao);
@@ -41,10 +48,14 @@ void bloqueiaProcesso(Processo* p) {
     p->bloqueado = 1;
 }
 
-// Verifica se o processo esta bloqueado
-int estaBloqueado(Processo* p) {
-    return p->bloqueado;
+// Desbloqueia o processo
+void desbloqueiaProcesso(Processo* p) {
+    p->bloqueado = 0;
 }
 
+// Verifica se o processo está bloqueado
+int estaBloqueado(Processo* p) {
+    return p->bloqueado;
 
+}
 #endif
